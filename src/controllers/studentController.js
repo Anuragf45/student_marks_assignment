@@ -26,13 +26,13 @@ const student = async (req, res) => {
       });
     }
 
-    //check authentication
-    // if (req.headers.userId != userId) {
-    //   return res.status(400).send({
-    //     status: false,
-    //     message: "User is not authorised to add students",
-    //   });
-    // }
+    // check authentication
+    if (req.headers.userId != userId) {
+      return res.status(400).send({
+        status: false,
+        message: "User is not authorised to add students",
+      });
+    }
 
     let isStudentPresent = await studentModel
       .findOne({

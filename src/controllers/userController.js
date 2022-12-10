@@ -34,8 +34,14 @@ const register = async function (req, res) {
             "Password must contain 8-15 characters, and atleast one uppercase, one special character, one number!",
         });
     }
-    let createdUse = await userModel.create(data);
-    return res.status(201).send({ status: true, message: "User registered" });
+    let createdUser = await userModel.create(data);
+    return res
+      .status(201)
+      .send({
+        status: true,
+        message: "User registered",
+        userData: createdUser,
+      });
   } catch (error) {
     return res.status(500).send({ status: false, message: error.message });
   }
@@ -53,12 +59,10 @@ const login = async function (req, res) {
 
     let user = await userModel.findOne({ email: email, password: password });
     if (!user) {
-      return res
-        .status(200)
-        .send({
-          status: true,
-          message: "No such user exist, please register!",
-        });
+      return res.status(200).send({
+        status: true,
+        message: "No such user exist, please register!",
+      });
     }
     let token = jwt.sign(
       {
