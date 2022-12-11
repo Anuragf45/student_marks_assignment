@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const userModel = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 const { isValidEmail, isValidPwd } = require("../validators/validations");
+const studentModel = require("../models/studentModel");
 
 const register = async function (req, res) {
   try {
@@ -72,7 +73,11 @@ const login = async function (req, res) {
       "As calm as the sea"
     );
 
-    return res.status(200).send({ status: true, token: token });
+
+    let studentList=await studentModel.find({userId:user._id}); //new code
+    
+
+    return res.status(200).send({ status: true, token: token,"studentList":studentList }); //new
   } catch (error) {
     return res.status(500).send({ status: false, message: error.message });
   }
